@@ -19,8 +19,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import cmpmemecreator.shared.generated.resources.Res
 import cmpmemecreator.shared.generated.resources.meme_templates
-import com.example.cmpmemecreator.meme_editor.presentation.MemeTemplate
-import com.example.cmpmemecreator.meme_editor.presentation.memeTemplates
+import com.example.cmpmemecreator.core.presentation.MemeTemplate
+import com.example.cmpmemecreator.core.presentation.memeTemplates
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 

@@ -1,4 +1,4 @@
-package com.example.cmpmemecreator.meme_editor.presentation
+package com.example.cmpmemecreator.core.presentation
 
 import cmpmemecreator.shared.generated.resources.Res
 import cmpmemecreator.shared.generated.resources.allDrawableResources
