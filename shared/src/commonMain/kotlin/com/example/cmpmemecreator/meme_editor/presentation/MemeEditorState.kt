@@ -5,8 +5,13 @@ import androidx.compose.ui.unit.IntSize
 data class MemeEditorState(
     val templateSize: IntSize = IntSize.Zero,
     val isLeavingWithoutSaving: Boolean = false,
-    val textBoxInteractionState: TextBoxInteractionState.None,
-    val memeTexts: List<MemeText> = emptyList()
+    val textBoxInteractionState: TextBoxInteractionState = TextBoxInteractionState.None,
+    val memeTexts: List<MemeText> = listOf(
+        MemeText(
+            id = "hello",
+            text = "TAP TO EDIT"
+        )
+    )
 )
 
 sealed interface TextBoxInteractionState{

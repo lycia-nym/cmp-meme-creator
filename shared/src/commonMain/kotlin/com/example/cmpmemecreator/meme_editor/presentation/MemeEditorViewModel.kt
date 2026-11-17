@@ -13,12 +13,7 @@ class MemeEditorViewModel : ViewModel() {
 
     private var hasLoadedInitialData = false
 
-    private val _state = MutableStateFlow(MemeEditorState(
-        templateSize = TODO(),
-        isLeavingWithoutSaving = TODO(),
-        textBoxInteractionState = TODO(),
-        memeTexts = TODO()
-    ))
+    private val _state = MutableStateFlow(MemeEditorState())
     val state = _state
         .onStart {
             if (!hasLoadedInitialData) {
@@ -29,12 +24,7 @@ class MemeEditorViewModel : ViewModel() {
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000L),
-            initialValue = MemeEditorState(
-                templateSize = TODO(),
-                isLeavingWithoutSaving = TODO(),
-                textBoxInteractionState = TODO(),
-                memeTexts = TODO()
-            )
+            initialValue = MemeEditorState()
         )
 
     fun onAction(action: MemeEditorAction) {
@@ -42,16 +32,46 @@ class MemeEditorViewModel : ViewModel() {
             MemeEditorAction.OnAddTextClick -> TODO()
             MemeEditorAction.OnConfirmLeaveWithoutSaving -> TODO()
             is MemeEditorAction.OnContainerSizeChange -> updateContainerSize(action.size)
-            is MemeEditorAction.OnDeleteMemeTextClick -> TODO()
+            is MemeEditorAction.OnDeleteMemeTextClick -> deleteMemeText(action.id)
             MemeEditorAction.OnDismissLeaveWithoutSaving -> TODO()
-            is MemeEditorAction.OnEditMemeTextClick -> TODO()
+            is MemeEditorAction.OnEditMemeTextClick -> editMemeText(action.id)
             MemeEditorAction.OnGoBackClick -> TODO()
-            is MemeEditorAction.OnMemeTextChange -> TODO()
+            is MemeEditorAction.OnMemeTextChange -> updateMemeText(action.id, action.text)
             is MemeEditorAction.OnMemeTextTransformChange -> TODO()
             is MemeEditorAction.OnSaveMemeClick -> TODO()
-            is MemeEditorAction.OnSelectMemeTextClick -> TODO()
+            is MemeEditorAction.OnSelectMemeTextClick -> selectMemeText(action.id)
             MemeEditorAction.OnTapOutsideSelectedText -> TODO()
         }
+    }
+
+    private fun deleteMemeText(id: String) {
+        _state.update { it.copy(
+           memeTexts = it.memeTexts.filter { memeText ->
+               memeText.id != id
+           }
+        ) }
+    }
+
+    private fun selectMemeText(id: String) {
+        _state.update { it.copy(
+            textBoxInteractionState = TextBoxInteractionState.Selected(id)
+        ) }
+    }
+
+    private fun updateMemeText(id: String, text: String){
+        _state.update { it.copy(
+            memeTexts = it.memeTexts.map { memeText ->
+                if(memeText.id == id){
+                    memeText.copy(text = text)
+                } else memeText
+            }
+        ) }
+    }
+
+    private fun editMemeText(id: String) {
+        _state.update { it.copy(
+            textBoxInteractionState = TextBoxInteractionState.Editing(id)
+        ) }
     }
 
     private fun updateContainerSize(size: IntSize) {
