@@ -18,6 +18,7 @@ import org.jetbrains.compose.resources.painterResource
 
 import cmpmemecreator.shared.generated.resources.Res
 import cmpmemecreator.shared.generated.resources.compose_multiplatform
+import com.example.cmpmemecreator.core.presentation.NavigationRoot
 import com.example.cmpmemecreator.core.theme.MemeCreatorTheme
 import com.example.cmpmemecreator.meme_gallery.presentation.MemeGalleryScreen
 
@@ -25,10 +26,6 @@ import com.example.cmpmemecreator.meme_gallery.presentation.MemeGalleryScreen
 @Preview
 fun App() {
     MemeCreatorTheme {
-        MemeGalleryScreen(
-            onMemeTemplateSelected = {
-
-            }
-        )
+        NavigationRoot()
     }
 }

@@ -13,7 +13,12 @@ class MemeEditorViewModel : ViewModel() {
 
     private var hasLoadedInitialData = false
 
-    private val _state = MutableStateFlow(MemeEditorState())
+    private val _state = MutableStateFlow(MemeEditorState(
+        templateSize = TODO(),
+        isLeavingWithoutSaving = TODO(),
+        textBoxInteractionState = TODO(),
+        memeTexts = TODO()
+    ))
     val state = _state
         .onStart {
             if (!hasLoadedInitialData) {
