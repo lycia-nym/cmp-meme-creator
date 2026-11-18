@@ -1,14 +1,23 @@
 package com.example.cmpmemecreator.meme_editor.presentation
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowLeft
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -19,6 +28,8 @@ import coil3.Image
 import com.example.cmpmemecreator.core.presentation.MemeTemplate
 import com.example.cmpmemecreator.core.presentation.memeTemplates
 import com.example.cmpmemecreator.core.theme.MemeCreatorTheme
+import com.example.cmpmemecreator.meme_editor.presentation.components.BottomBar
+import com.example.cmpmemecreator.meme_editor.presentation.components.DraggableContainer
 import com.example.cmpmemecreator.meme_editor.presentation.components.MemeTextBox
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.viewmodel.koinViewModel
@@ -26,6 +37,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun MemeEditorRoot(
     template: MemeTemplate,
+    onBackClick: () -> Unit,
     viewModel: MemeEditorViewModel = koinViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -33,7 +45,13 @@ fun MemeEditorRoot(
     MemeEditorScreen(
         template = template,
         state = state,
-        onAction = viewModel::onAction
+        onAction = { action ->
+            when(action){
+                is MemeEditorAction.OnGoBackClick -> onBackClick()
+                else -> Unit
+            }
+            viewModel.onAction(action)
+        }
     )
 }
 
@@ -43,36 +61,83 @@ fun MemeEditorScreen(
     state: MemeEditorState,
     onAction: (MemeEditorAction) -> Unit,
 ) {
-    Box(
+    Scaffold (
         modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.Center
-    ) {
-        Image(
-            painter = painterResource(template.drawable),
-            contentDescription = null,
-            modifier = Modifier.fillMaxWidth(),
-            contentScale = ContentScale.FillWidth
-        )
-        state.memeTexts.forEach { memeText ->
-            MemeTextBox(
-                memeText = memeText,
-                textBoxInteractionState = state.textBoxInteractionState,
-                maxWidth = 500.dp,
-                maxHeight = 500.dp,
-                onClick = {
-                    onAction(MemeEditorAction.OnSelectMemeTextClick(memeText.id))
+            .fillMaxSize()
+            .pointerInput(Unit){
+                detectTapGestures{
+                    onAction(MemeEditorAction.OnTapOutsideSelectedText)
+                }
+            },
+        bottomBar = {
+            BottomBar(
+                onAddTextClick = {
+                    onAction(MemeEditorAction.OnAddTextClick)
                 },
-                onDoubleClick = {
-                    onAction(MemeEditorAction.OnEditMemeTextClick(memeText.id))
-                },
-                onDeleteClick = {
-                    onAction(MemeEditorAction.OnDeleteMemeTextClick(memeText.id))
-                },
-                onTextChange = {
-                    onAction(MemeEditorAction.OnMemeTextChange(memeText.id, it))
+                onSaveClick = {
+                    onAction(MemeEditorAction.OnSaveMemeClick(template))
                 }
             )
+        }
+    ){ innerPadding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding),
+            contentAlignment = Alignment.Center
+        ) {
+            Box {
+                Image(
+                    painter = painterResource(template.drawable),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .onSizeChanged {
+                            onAction(MemeEditorAction.OnContainerSizeChange(it))
+                        },
+                    contentScale = ContentScale.FillWidth
+                )
+                DraggableContainer(
+                    children = state.memeTexts,
+                    textBoxInteractionState = state.textBoxInteractionState,
+                    onChildTransformChanged = { id, offset, rotation, scale ->
+                        onAction(
+                            MemeEditorAction.OnMemeTextTransformChange(
+                                id = id,
+                                offset = offset,
+                                rotation = rotation,
+                                scale = scale
+                            )
+                        )
+                    },
+                    onChildClick = {
+                        onAction(MemeEditorAction.OnSelectMemeTextClick(it))
+                    },
+                    onChildDoubleClick = {
+                        onAction(MemeEditorAction.OnEditMemeTextClick(it))
+                    },
+                    onChildDeleteClick = {
+                        onAction(MemeEditorAction.OnDeleteMemeTextClick(it))
+                    },
+                    onChildTextChange = { id, text ->
+                        onAction(MemeEditorAction.OnMemeTextChange(id, text))
+                    },
+                    modifier = Modifier
+                        .matchParentSize()
+                )
+            }
+            IconButton(
+                onClick = {
+                    onAction(MemeEditorAction.OnGoBackClick)
+                },
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+            ){
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowLeft,
+                    contentDescription = "Back"
+                )
+            }
         }
     }
 }

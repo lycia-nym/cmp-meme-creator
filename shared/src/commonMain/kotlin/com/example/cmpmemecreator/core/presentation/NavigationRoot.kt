@@ -32,7 +32,10 @@ fun NavigationRoot() {
             }
 
             MemeEditorRoot(
-                template = template
+                template = template,
+                onBackClick = {
+                    navController.navigateUp()
+                }
             )
         }
     }
