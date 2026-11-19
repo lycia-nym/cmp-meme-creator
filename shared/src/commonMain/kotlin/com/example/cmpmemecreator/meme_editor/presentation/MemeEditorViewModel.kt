@@ -55,7 +55,7 @@ class MemeEditorViewModel : ViewModel() {
     private fun dismissConfirmLeaveDialog() {
         _state.update {
             it.copy(
-                isLeavingWithoutSaving = true
+                isLeavingWithoutSaving = false
             )
         }
     }

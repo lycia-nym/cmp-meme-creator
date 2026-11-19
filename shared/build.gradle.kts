@@ -72,6 +72,7 @@ kotlin {
             implementation(libs.jetbrains.compose.navigation)
             implementation(libs.material3.adaptive)
             implementation(libs.material3.adaptive.layout)
+            implementation(libs.navigation.event.compose)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)

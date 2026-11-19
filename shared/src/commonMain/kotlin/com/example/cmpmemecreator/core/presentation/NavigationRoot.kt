@@ -2,7 +2,6 @@ package com.example.cmpmemecreator.core.presentation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -33,7 +32,7 @@ fun NavigationRoot() {
 
             MemeEditorRoot(
                 template = template,
-                onBackClick = {
+                onGoBack = {
                     navController.navigateUp()
                 }
             )

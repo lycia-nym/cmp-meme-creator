@@ -33,6 +33,7 @@ coil = "3.1.0"
 # Navigation & Adaptive Layouts
 navigation-compose = "2.10.0"
 adaptive = "1.3.0"
+navigation-event = "1.1.0"
 
 [libraries]
 # Language & Runtime
@@ -80,6 +81,7 @@ coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.re
 jetbrains-compose-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigation-compose" }
 material3-adaptive = { module = "org.jetbrains.compose.material3.adaptive:adaptive", version.ref = "adaptive" }
 material3-adaptive-layout = { module = "org.jetbrains.compose.material3.adaptive:adaptive-layout", version.ref = "adaptive" }
+navigation-event-compose = { module = "org.jetbrains.androidx.navigationevent:navigationevent-compose", version.ref = "navigation-event" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
