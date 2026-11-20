@@ -3,10 +3,12 @@ package com.example.cmpmemecreator.meme_editor.presentation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowLeft
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -20,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigationevent.NavigationEventInfo
@@ -49,8 +52,8 @@ fun MemeEditorRoot(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.hasLeftEditor){
-        if(state.hasLeftEditor){
+    LaunchedEffect(state.hasLeftEditor) {
+        if (state.hasLeftEditor) {
             onGoBack()
         }
     }
@@ -105,16 +108,24 @@ fun MemeEditorScreen(
                 .padding(innerPadding),
             contentAlignment = Alignment.Center
         ) {
+            val windowSize = LocalWindowInfo.current.containerSize
             Box {
                 Image(
                     painter = painterResource(template.drawable),
                     contentDescription = null,
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .then(
+                            if (windowSize.width > windowSize.height) {
+                                Modifier.fillMaxHeight()
+                            } else Modifier.fillMaxWidth()
+
+                        )
                         .onSizeChanged {
                             onAction(MemeEditorAction.OnContainerSizeChange(it))
                         },
-                    contentScale = ContentScale.FillWidth
+                    contentScale = if (windowSize.width > windowSize.height) {
+                        ContentScale.FillHeight
+                    } else ContentScale.FillWidth
                 )
                 DraggableContainer(
                     children = state.memeTexts,
@@ -153,7 +164,7 @@ fun MemeEditorScreen(
                     .align(Alignment.TopStart)
             ) {
                 Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowLeft,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back"
                 )
             }

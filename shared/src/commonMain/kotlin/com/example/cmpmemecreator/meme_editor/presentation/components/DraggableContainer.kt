@@ -16,11 +16,9 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import com.example.cmpmemecreator.meme_editor.presentation.MemeText
 import com.example.cmpmemecreator.meme_editor.presentation.TextBoxInteractionState
-import io.ktor.client.request.invoke
 import kotlin.math.PI
 import kotlin.math.abs
 import kotlin.math.cos
-import kotlin.math.min
 import kotlin.math.sin
 
 // 2.35.45
