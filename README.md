@@ -1,24 +1,42 @@
-This is a Kotlin Multiplatform project targeting Android, iOS.
+# MemeCreator
 
-* [/iosApp](./iosApp/iosApp) contains an iOS application. Even if you’re sharing your UI with Compose Multiplatform,
-  you need this entry point for your iOS app. This is also where you should add SwiftUI code for your project.
+A cross-platform meme creation application built with **Kotlin Multiplatform** and **Compose Multiplatform**.
 
-* [/shared](./shared/src) is for code that will be shared across your Compose Multiplatform applications.
-  It contains several subfolders:
-  - [commonMain](./shared/src/commonMain/kotlin) is for code that’s common for all targets.
-  - Other folders are for Kotlin code that will be compiled for only the platform indicated in the folder name.
-    For example, if you want to use Apple’s CoreCrypto for the iOS part of your Kotlin app,
-    the [iosMain](./shared/src/iosMain/kotlin) folder would be the right place for such calls.
-    Similarly, if you want to edit the Desktop (JVM) specific part, the [jvmMain](./shared/src/jvmMain/kotlin)
-    folder is the appropriate location.
+MemeCreator is a multiplatform project focused on creating memes through a shared application codebase, providing a consistent UI experience across Android and iOS.
 
-### Running the apps
+## Features
 
-Use the run configurations provided by the run widget in your IDE's toolbar. You can also use these commands and options:
+- Cross-platform application targeting Android and iOS
+- Shared UI and application logic using Compose Multiplatform
+- Image loading and rendering using Coil
+- Material 3 UI components
+- Navigation between application screens
+- Dependency injection using Koin
+- Asynchronous operations using Kotlin Coroutines
 
-- Android app: `./gradlew :androidApp:assembleDebug`
-- iOS app: open the [/iosApp](./iosApp) directory in Xcode and run it from there.
+## Tech Stack
 
----
+- **Kotlin**
+- **Kotlin Multiplatform (KMP)**
+- **Compose Multiplatform (CMP)**
+- **Material 3** — UI components and design system
+- **Koin** — dependency injection
+- **Coil** — image loading
+- **Kotlin Serialization** — JSON serialization
+- **Coroutines** — asynchronous operations
+- **Compose Navigation** — navigation between screens
+- **Android & iOS** — supported platforms
 
-Learn more about [Kotlin Multiplatform](https://www.jetbrains.com/help/kotlin-multiplatform-dev/get-started.html)…
+## Architecture
+
+The project separates shared application code from platform-specific implementations:
+
+- **Shared** — common UI, application logic, and reusable components
+- **Android** — Android-specific application entry point and configuration
+- **iOS** — iOS application entry point and platform-specific integration
+
+The shared module uses dependency injection to manage application dependencies and platform-specific source sets to support multiple platforms.
+
+## Purpose
+
+This project was created while following **Philipp Lackner's Meme Creator course** as hands-on practice with modern Kotlin Multiplatform development, Compose Multiplatform, and building cross-platform applications using a shared Kotlin codebase.
