@@ -3,10 +3,13 @@ package com.example.cmpmemecreator.meme_editor.presentation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ArrowLeft
@@ -93,6 +96,7 @@ fun MemeEditorScreen(
             },
         bottomBar = {
             BottomBar(
+                modifier = Modifier.navigationBarsPadding(),
                 onAddTextClick = {
                     onAction(MemeEditorAction.OnAddTextClick)
                 },
